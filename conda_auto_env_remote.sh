@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # conda-auto-env automatically activates a conda environment when
-# entering a folder with an environment.yml file.
+# entering a folder with an ${CONDA_AUTO_FILE} file.
 #
 # If the environment doesn't exist, conda-auto-env creates it and
 # activates it for you.
@@ -13,11 +13,12 @@
 # conda-auto-env also supports remote anaconda.org environments.
 # To specify a remote environment create an environment-remote.yml
 # file with the name and channel of your environment
+CONDA_AUTO_FILE=".conda-env"
 
 function conda_auto_env_remote() {
-  if [ -e "environment.yml" ]; then
-    # echo "environment.yml file found"
-    ENV=$(head -n 1 environment.yml | cut -f2 -d ' ')
+  if [ -e "${CONDA_AUTO_FILE}" ]; then
+    # echo "${CONDA_AUTO_FILE} file found"
+    ENV=$(head -n 1 ${CONDA_AUTO_FILE} | cut -f2 -d ' ')
     # Check if you are already in the environment
     if [[ $PATH != *$ENV* ]]; then
       # Check if the environment exists
@@ -33,7 +34,7 @@ function conda_auto_env_remote() {
     fi
   fi
   if [ -e "environment-remote.yml" ]; then
-    # echo "environment.yml file found"
+    # echo "${CONDA_AUTO_FILE} file found"
     ENV=$(sed -n '1p' environment-remote.yml | cut -f2 -d ' ')
     CHANNEL=$(sed -n '2p' environment-remote.yml | cut -f2 -d ' ')
     # Check if you are already in the environment
